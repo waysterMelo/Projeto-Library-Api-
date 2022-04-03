@@ -47,8 +47,7 @@ public class BookControllerTest {
 
         BookDto bookDto = createNewBook();
 
-        //simular o retorno do service
-        Book savedBook = Book.builder().id(2).author("Author").title("a").isbn("001").build();
+        Book savedBook = Book.builder().id(2).author("Author").title("a").isbn("00").build();
 
         BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(savedBook);
         String json = new ObjectMapper().writeValueAsString(bookDto);
@@ -69,7 +68,9 @@ public class BookControllerTest {
     }
 
     private BookDto createNewBook(){
-        return BookDto.builder().author("Author").title("a").isbn("001").build();
+        return BookDto.builder()
+                .id(2)
+                .author("Author").title("a").isbn("00").build();
     }
 
     @Test
