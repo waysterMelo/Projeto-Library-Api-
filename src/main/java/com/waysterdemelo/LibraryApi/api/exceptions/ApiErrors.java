@@ -11,13 +11,13 @@ public class ApiErrors {
 
     private List<String> errors;
 
-    public ApiErrors(BussinessException ex){
-        this.errors = Arrays.asList(ex.getMessage());
-    }
-
     public ApiErrors(BindingResult bindingResult) {
         this.errors = new ArrayList<>();
         bindingResult.getAllErrors().forEach(error -> this.errors.add(error.getDefaultMessage()));
+    }
+
+    public ApiErrors(BussinessException ex){
+        this.errors = Arrays.asList(ex.getMessage());
     }
 
     public List<String> getErrors(){
