@@ -6,6 +6,8 @@ import com.waysterdemelo.LibraryApi.model.repository.BookRepository;
 import com.waysterdemelo.LibraryApi.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -21,5 +23,20 @@ public class BookServiceImpl implements BookService {
             throw new BussinessException("Isbn ja cadastrada");
         }
        return bookRepository.save(book);
+    }
+
+    @Override
+    public Optional<Book> getById(long id) {
+       return bookRepository.findById(id);
+    }
+
+    @Override
+    public void delete(Book book) {
+
+    }
+
+    @Override
+    public Book update(Book book) {
+        return null;
     }
 }
