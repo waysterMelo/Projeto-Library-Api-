@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -23,6 +25,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.awt.print.Pageable;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -49,7 +53,7 @@ public class BookControllerTest {
 
         BookDto bookDto = createNewBook();
 
-        Book savedBook = Book.builder().id(1).author("wayster").title("java").isbn("001").build();
+        Book savedBook = Book.builder().id(1L).author("wayster").title("java").isbn("001").build();
 
         BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(savedBook);
         String json = new ObjectMapper().writeValueAsString(bookDto);
@@ -151,7 +155,7 @@ public class BookControllerTest {
     @Test
     @DisplayName("deve deletar um livro")
     public void deleteBookTest() throws Exception{
-        BDDMockito.given(service.getById(Mockito.anyLong())).willReturn(Optional.of(Book.builder().id(1).build()));
+        BDDMockito.given(service.getById(Mockito.anyLong())).willReturn(Optional.of(Book.builder().id(1L).build()));
 
         MockHttpServletRequestBuilder delete = MockMvcRequestBuilders.delete(BOOK_API.concat("/" + 1));
 
@@ -177,7 +181,7 @@ public class BookControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(createNewBook());
 
-        Book updatingBook = Book.builder().id(1).isbn("001").title("java spring boot").author("wayster h c melo").build();
+        Book updatingBook = Book.builder().id(1L).isbn("001").title("java spring boot").author("wayster h c melo").build();
         BDDMockito.given(service.getById(id)).willReturn(Optional.of(updatingBook));
 
         Book updatedBook =  Book.builder().id(id).isbn("001").title("java").author("wayster").build();
@@ -208,5 +212,19 @@ public class BookControllerTest {
         mvc.perform(put).andExpect(status().isNotFound());
     }
 
+    @Test
+    @DisplayName("Deve filtrar livros ")
+    public void findBookTest(){
+        Long id = 1L;
+
+        Book book = Book.builder()
+                .id(id)
+                .title(createNewBook().getTitle())
+                .isbn(createNewBook().getIsbn())
+                .author(createNewBook().getAuthor()).build();
+
+        BDDMockito.given(service.find(Mockito.any(Book.class), Mockito.any(Pageable.class)))
+                .willReturn(new PageImpl<Book>(Arrays.asList(book), PageRequest.of(0,100), 1));
+    }
 
 }
