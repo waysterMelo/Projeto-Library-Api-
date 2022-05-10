@@ -6,6 +6,9 @@ import com.waysterdemelo.LibraryApi.exceptions.BussinessException;
 import com.waysterdemelo.LibraryApi.model.entity.Book;
 import com.waysterdemelo.LibraryApi.service.BookService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/books")
@@ -59,9 +64,15 @@ public class BookController {
         return modelMapper.map(book, BookDto.class);
     }
 
-
-
-
+    @GetMapping
+    public Page<BookDto> find(BookDto bookDto, Pageable pageable){
+        Book filter = modelMapper.map(bookDto, Book.class);
+        Page<Book> result = service.find(filter, pageable);
+        List<BookDto> lista =  result.getContent()
+                .stream().map(entity -> modelMapper.map(entity, BookDto.class))
+                .collect(Collectors.toList());
+        return new PageImpl<BookDto>(lista, pageable, result.getTotalElements());
+    }
 
 
 
