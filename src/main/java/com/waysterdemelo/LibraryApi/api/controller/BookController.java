@@ -1,8 +1,6 @@
-package com.waysterdemelo.LibraryApi.api.resource;
+package com.waysterdemelo.LibraryApi.api.controller;
 
 import com.waysterdemelo.LibraryApi.api.dto.BookDto;
-import com.waysterdemelo.LibraryApi.api.exceptions.ApiErrors;
-import com.waysterdemelo.LibraryApi.exceptions.BussinessException;
 import com.waysterdemelo.LibraryApi.model.entity.Book;
 import com.waysterdemelo.LibraryApi.service.BookService;
 import org.modelmapper.ModelMapper;
@@ -10,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -73,28 +69,5 @@ public class BookController {
                 .collect(Collectors.toList());
         return new PageImpl<BookDto>(lista, pageable, result.getTotalElements());
     }
-
-
-
-
-
-
-
-
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handleValidationException(MethodArgumentNotValidException ex){
-        BindingResult bindingResult = ex.getBindingResult();
-        return new ApiErrors(bindingResult);
-    }
-
-    @ExceptionHandler(BussinessException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handlerBussinessException(BussinessException ex){
-        return new ApiErrors(ex);
-    }
-
-
 
 }

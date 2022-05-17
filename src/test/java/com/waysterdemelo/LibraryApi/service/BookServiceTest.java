@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -200,6 +200,22 @@ public class BookServiceTest {
         assertThat(result.getPageable().getPageNumber()).isEqualTo(0);
         assertThat(result.getPageable().getPageSize()).isEqualTo(10);
 
+    }
+
+
+    @Test
+    @DisplayName("deve obter um livro pelo isbn")
+    public void getBookByIsbnTest(){
+        String isbn = "123";
+        when(repository.findByIsbn(isbn)).thenReturn(Optional.of(Book.builder().id(1L).isbn(isbn).build()));
+
+        Optional<Book> book =  service.getByIsbn(isbn);
+
+        assertThat(book.isPresent()).isTrue();
+        assertThat(book.get().getId()).isEqualTo(1L);
+        assertThat(book.get().getIsbn()).isEqualTo(isbn);
+
+        verify(repository, times(1)).findByIsbn(isbn);
     }
 
 }

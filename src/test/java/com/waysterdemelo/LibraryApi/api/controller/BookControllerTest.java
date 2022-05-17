@@ -1,4 +1,4 @@
-package com.waysterdemelo.LibraryApi.api.resource;
+package com.waysterdemelo.LibraryApi.api.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
