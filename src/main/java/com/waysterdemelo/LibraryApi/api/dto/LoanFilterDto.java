@@ -1,6 +1,5 @@
 package com.waysterdemelo.LibraryApi.api.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,12 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoanDto {
+public class LoanFilterDto {
 
-    private Long id;
-    private String isbn;
+    private String isbn ;
     private String customer;
-    private String email;
-    private BookDto bookDto;
+
+
 
 }

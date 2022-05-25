@@ -1,4 +1,4 @@
-package com.waysterdemelo.LibraryApi;
+package com.waysterdemelo.LibraryApi.repositoryTest;
 
 import com.waysterdemelo.LibraryApi.model.entity.Book;
 import com.waysterdemelo.LibraryApi.model.repository.BookRepository;
