@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class LoanController {
 
-    private final LoanService loanService;
+    private  LoanService loanService;
     private final BookService bookService;
     private final ModelMapper modelMapper;
 

@@ -11,6 +11,8 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class LoanServiceImpl implements LoanService {
@@ -51,5 +53,10 @@ public class LoanServiceImpl implements LoanService {
         return loanRepository.findByBook(book, pageable);
     }
 
-
+    @Override
+    public List<Loan> getAllLateLoans() {
+        final Integer loanDays = 4;
+        LocalDate threeDaysAgo = LocalDate.now().minusDays(loanDays);
+        return loanRepository.findByLoanDateLessThanAndNotReturned(threeDaysAgo);
+    }
 }

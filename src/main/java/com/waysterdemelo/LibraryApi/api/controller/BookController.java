@@ -6,6 +6,8 @@ import com.waysterdemelo.LibraryApi.model.entity.Book;
 import com.waysterdemelo.LibraryApi.model.entity.Loan;
 import com.waysterdemelo.LibraryApi.service.BookService;
 import com.waysterdemelo.LibraryApi.service.LoanService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +26,17 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
+@Api("BOOK API")
 public class BookController {
 
     private final BookService service;
     private final ModelMapper modelMapper;
-    private final LoanService loanService;
+    private  LoanService loanService;
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("CADASTRAR UM LIVRO")
     public BookDto create(@RequestBody @Valid BookDto bookDto){
 
         Book entity = modelMapper.map( bookDto, Book.class);
@@ -56,6 +60,7 @@ public class BookController {
     }
 
     @PutMapping("{id}")
+    @ApiOperation("ALTERAR UM LIVRO")
     public BookDto update(@PathVariable Long id, BookDto dto){
         Book book = service.getById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         book.setAuthor(dto.getAuthor());
@@ -65,6 +70,7 @@ public class BookController {
     }
 
     @GetMapping
+    @ApiOperation("ACHAR UM LIVRO POR ID")
     public Page<BookDto> find(BookDto bookDto, Pageable pageable){
         Book filter = modelMapper.map(bookDto, Book.class);
         Page<Book> result = service.find(filter, pageable);
